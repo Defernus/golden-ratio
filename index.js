@@ -29,7 +29,7 @@ const DIRECTIONS = {
   [DOWN]: "DOWN",
   [LEFT]: "LEFT",
   [UP]: "UP",
-}
+};
 
 const COLORS = [...Array(MAX_DEPTH).keys()].map(i => {
   const r = Math.floor(Math.random() * 256);
@@ -75,6 +75,17 @@ const draw = (depth, dir, box) => {
   }
 };
 
+/**
+ * @param {number} width
+ * @param {number} height
+ */
+const updateRatio = (width, height) => {
+  const ratio = width / height;
+
+  text.innerHTML = `Ratio: ${ratio.toFixed(3)}`;
+};
+
+updateRatio(WIDTH, HEIGHT);
 draw(MAX_DEPTH, RIGHT, { x: 0, y: 0, w: WIDTH, h: HEIGHT });
 
 let isDragging = false;
@@ -96,15 +107,14 @@ const handleMouseUp = (e) => {
 /**
  * @param {MouseEvent} e
  */
-const handleMouseMove = (e) => {
+const handleMouse = (e) => {
   if (!isDragging) {
     return;
   }
   ctx.fillStyle = "white";
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
-  const ratio = e.clientX / e.clientY;
-  text.innerHTML = `Ratio: ${ratio.toFixed(2)}`;
+  updateRatio(e.clientX, e.clientY);
 
   draw(MAX_DEPTH, RIGHT, {
     x: 0,
@@ -117,4 +127,8 @@ const handleMouseMove = (e) => {
 canvas.addEventListener("mousedown", handleMouseDown);
 canvas.addEventListener("mouseup", handleMouseUp);
 canvas.addEventListener("mouseout", handleMouseUp);
-canvas.addEventListener("mousemove", handleMouseMove);
+canvas.addEventListener("mousemove", handleMouse);
+canvas.addEventListener("touchstart", handleMouseDown);
+canvas.addEventListener("touchend", handleMouseUp);
+canvas.addEventListener("touchcancel", handleMouseUp);
+canvas.addEventListener("touchmove", handleMouse);
