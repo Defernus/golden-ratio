@@ -93,20 +93,6 @@ let isDragging = false;
 /**
  * @param {MouseEvent} e
  */
-const handleMouseDown = (e) => {
-  isDragging = true;
-};
-
-/**
- * @param {MouseEvent} e
- */
-const handleMouseUp = (e) => {
-  isDragging = false;
-};
-
-/**
- * @param {MouseEvent} e
- */
 const handleMouse = (e) => {
   if (!isDragging) {
     return;
@@ -122,6 +108,15 @@ const handleMouse = (e) => {
     w: e.clientX,
     h: e.clientY,
   });
+};
+
+const handleMouseDown = (e) => {
+  isDragging = true;
+  handleMouse(e);
+};
+
+const handleMouseUp = () => {
+  isDragging = false;
 };
 
 canvas.addEventListener("mousedown", handleMouseDown);
